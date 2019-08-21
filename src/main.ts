@@ -6,9 +6,11 @@ import {
 import { AppModule } from './app.module';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {ConfigService} from "./service/config.service";
+import {ValidationPipe} from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+  app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
 
   const { basePath, port, isSwaggerEnabled } = configService;

@@ -25,6 +25,7 @@
     "@nestjs/platform-express": "^6.0.0",
     "@nestjs/platform-fastify": "^6.5.3",
     "@nestjs/swagger": "latest",
+    "class-transformer": "^0.2.3",
     "class-validator": "latest",
     "dotenv": "latest",
     "fastify-swagger": "^0.15.0",

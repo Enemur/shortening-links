@@ -1,7 +1,9 @@
-import {Controller, Get, HttpStatus, Param, Query, Req, Res} from "@nestjs/common";
+import {Controller, Get, HttpStatus, Param, Put, Req, Res} from "@nestjs/common";
 import {OutShorteningLinkDTO} from "../dto/out.shortening-link.dto";
 import {ShorteningLinkService} from "../service/shortening-link.service";
 import { ApiResponse } from '@nestjs/swagger';
+import {IsUrl} from "class-validator";
+import {InShorteningLinkDTO} from "../dto/in.shortening-link.dto";
 
 @Controller()
 export class ShorteningLinksController {
@@ -9,19 +11,19 @@ export class ShorteningLinksController {
     private readonly shorteningLinkService: ShorteningLinkService,
   ) { }
 
-  @Get('/shortening-link')
+  @Put(':longLink')
   @ApiResponse({ status: HttpStatus.OK, type: OutShorteningLinkDTO })
   async shortLink(
-    @Query('long_link') longLink: string,
+    @Param() params: InShorteningLinkDTO,
     @Req() req,
   ): Promise<OutShorteningLinkDTO> {
-    const uuid = await this.shorteningLinkService.shorteningLink(longLink);
+    const uuid = await this.shorteningLinkService.shorteningLink(params.longLink);
     return new OutShorteningLinkDTO({
       shortLink: `http://${req.headers.host}/${uuid}`
     })
   }
 
-  @Get('/:uuid')
+  @Get(':uuid')
   async redirect(
     @Res() response,
     @Param('uuid') uuid: string,
